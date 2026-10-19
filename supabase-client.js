@@ -177,5 +177,5 @@
     if (error) showLogin(error.message);
     else if (data.session && EDITORS.has(data.session.user.email?.toLowerCase())) start();
     else showLogin();
-  });
+  }).catch(error => showLogin(`Không kiểm tra được đăng nhập: ${error.message}`));
 })();
