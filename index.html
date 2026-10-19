@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b2634">
+  <title>Theo dõi Chương trình Nhân viên Tài năng PVEP năm 2025-2026</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="supabase-client.js"></script>
+</head>
+<body>
+  <section id="login-screen" class="login-screen" hidden>
+    <div class="login-card">
+      <p class="eyebrow">PVEP · CHƯƠNG TRÌNH NHÂN VIÊN TÀI NĂNG</p>
+      <h1>Đăng nhập để xem dữ liệu</h1>
+      <p>Dùng email được cấp quyền. Liên kết đăng nhập sẽ được gửi vào hộp thư của bạn.</p>
+      <form id="login-form"><label>Email công ty<input id="login-email" type="email" required autocomplete="email" placeholder="ten@pvep.com.vn"></label><button type="submit" class="button primary">Gửi liên kết đăng nhập</button></form>
+      <p id="login-message" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+  <div class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">⌁</span><span><strong>Theo dõi Chương trình Nhân viên Tài năng PVEP năm 2025-2026</strong></span></div>
+      <nav aria-label="Điều hướng chính">
+        <button class="nav-item active" data-page="dashboard"><span>▦</span> Tổng quan chương trình</button>
+        <button class="nav-item" data-page="people"><span>◫</span> Tiến độ nhân sự</button>
+        <button class="nav-item" data-page="mentoring"><span>◇</span> Hướng dẫn, chia sẻ, kèm cặp</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="source-card"><small>NGUỒN DỮ LIỆU</small><strong id="source-label">Supabase</strong><span id="source-count">Đang tải dữ liệu…</span></div>
+        <p>Dữ liệu chung trên Supabase. Mở lại trang để xem các thay đổi mới nhất.</p>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb">Chương trình nhân viên tài năng <span>/</span> <strong id="page-title">Tổng quan chương trình</strong></div>
+        <div class="top-actions"><span class="storage-badge" id="source-badge">SUPABASE</span><button class="button ghost" id="refresh-button">Làm mới</button><button class="button ghost" id="export-button">Sao lưu dữ liệu</button><button class="button ghost" id="logout-button">Đăng xuất</button><button class="button ghost" id="reset-data" hidden>Nạp lại từ Excel</button><button class="button ghost" id="import-button" hidden>Khôi phục bản sao</button><input id="import-file" type="file" accept=".json,application/json" hidden></div>
+      </header>
+      <main id="main" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <dialog id="record-dialog" class="record-dialog">
+    <form id="record-form" method="dialog">
+      <div class="dialog-head"><div><small>CẬP NHẬT HỒ SƠ</small><h2 id="dialog-title">Thêm nội dung</h2></div><button class="icon-button" type="button" id="close-dialog" aria-label="Đóng">×</button></div>
+      <div class="form-grid">
+        <label>Nhóm nội dung<select id="field-group" required></select></label>
+        <label>Trạng thái<select id="field-status"><option value="planned">Đã có kế hoạch</option><option value="done">Đã hoàn thành</option></select></label>
+        <label class="wide">Tên khóa học / công việc<input id="field-title" required maxlength="240" placeholder="Nhập tên nội dung cụ thể"></label>
+        <label class="wide">Thời gian / kế hoạch<input id="field-when" maxlength="120" placeholder="Ví dụ: Tháng 11/2026"></label>
+        <label class="wide">Điểm hoặc kết quả (nếu có)<input id="field-score" maxlength="50" placeholder="Ví dụ: 850 hoặc Hoàn thành"></label>
+        <label class="wide">Ghi chú<textarea id="field-note" rows="3" maxlength="500" placeholder="Thông tin cần lưu thêm"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="button danger" id="delete-record" hidden>Xóa nội dung</button><span class="spacer"></span><button type="button" class="button ghost" id="cancel-dialog">Hủy</button><button type="submit" class="button primary">Lưu thay đổi</button></div>
+    </form>
+  </dialog>
+  <dialog id="paf-dialog" class="record-dialog">
+    <form id="paf-form" method="dialog">
+      <div class="dialog-head"><div><small>HỒ SƠ CÁ NHÂN</small><h2>Cập nhật đánh giá MĐHTCV theo tháng</h2></div><button class="icon-button" type="button" data-close-dialog="paf" aria-label="Đóng">×</button></div>
+      <div class="form-grid">
+        <label>Tháng<select id="paf-period" required></select></label>
+        <label>Điểm<input id="paf-score" type="number" min="0" max="100" step="0.01" placeholder="Ví dụ: 89.5"></label>
+        <label class="wide">Xếp loại<select id="paf-grade"><option value="">Chưa có xếp loại</option><option value="HT">HT · Hoàn thành</option><option value="HTT">HTT · Hoàn thành tốt</option><option value="HTXS">HTXS · Hoàn thành xuất sắc</option></select></label>
+      </div>
+      <p class="dialog-hint">Để trống cả điểm và xếp loại rồi lưu để xóa dữ liệu của tháng đã chọn.</p>
+      <div class="dialog-actions"><span class="spacer"></span><button type="button" class="button ghost" data-close-dialog="paf">Hủy</button><button type="submit" class="button primary">Lưu đánh giá</button></div>
+    </form>
+  </dialog>
+  <dialog id="mentor-dialog" class="record-dialog wide-dialog">
+    <form id="mentor-form" method="dialog">
+      <div class="dialog-head"><div><small>HƯỚNG DẪN · KÈM CẶP</small><h2 id="mentor-dialog-title">Cập nhật chủ đề</h2></div><button class="icon-button" type="button" data-close-dialog="mentor" aria-label="Đóng">×</button></div>
+      <div class="form-grid">
+        <label class="wide">Chủ đề<textarea id="mentor-topic" rows="3" required maxlength="1000"></textarea></label>
+        <label>Cán bộ hướng dẫn<input id="mentor-name" maxlength="240"></label>
+        <label>Chức danh<input id="mentor-role" maxlength="240"></label>
+      </div>
+      <div class="mentor-form-heading">Lịch theo cột tháng trong Excel <small>Nhập nguyên văn ngày và giờ thực tế</small></div>
+      <div class="mentor-period-grid" id="mentor-period-fields"></div>
+      <div class="dialog-actions"><button type="button" class="button danger" id="delete-mentor" hidden>Xóa chủ đề</button><span class="spacer"></span><button type="button" class="button ghost" data-close-dialog="mentor">Hủy</button><button type="submit" class="button primary">Lưu chủ đề</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+seed.js
+private-data.json
+talent-track-*.json
+*.xlsx
+M365-SETUP.md
+m365/
+supabase/data/
+supabase/.build/
+supabase/build-import.mjs
+supabase/*.zip
