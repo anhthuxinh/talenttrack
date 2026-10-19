@@ -149,7 +149,7 @@
       document.querySelector('#login-button').hidden = canEdit;
       document.querySelector('#logout-button').hidden = !canEdit;
       const script = document.createElement('script');
-      script.src = 'app.js';
+      script.src = 'app.js?v=public-1';
       document.body.append(script);
     } catch (error) {
       started = false;
