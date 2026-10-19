@@ -1,14 +1,14 @@
 # Theo dõi Chương trình Nhân viên Tài năng PVEP năm 2025–2026
 
-Trang HTML tĩnh đọc và cập nhật dữ liệu chung trong Supabase. Không cần Next.js, npm, máy chủ riêng hoặc tải lại Excel sau mỗi lần sửa. Bản trên GitHub Pages chỉ chứa giao diện, Project URL và publishable key; dữ liệu nhân sự vẫn ở Supabase, được bảo vệ bằng đăng nhập và Row Level Security (RLS).
+Trang HTML tĩnh đọc và cập nhật dữ liệu chung trong Supabase. Không cần Next.js, npm, máy chủ riêng hoặc tải lại Excel sau mỗi lần sửa. Bản trên GitHub Pages chỉ chứa giao diện, Project URL và publishable key; dữ liệu nhân sự nằm ở Supabase. Ai có link đều xem được dữ liệu. Quyền sửa vẫn do đăng nhập và Row Level Security (RLS) giới hạn.
 
 ## Đưa trang lên GitHub Pages
 
 Nội dung thư mục `github-ready/` là bộ tệp công khai. Trong repository GitHub, vào **Settings → Pages → Build and deployment → Deploy from a branch**, chọn **main** và **/(root)**. Địa chỉ dự kiến: `https://anhthuxinh.github.io/talenttrack/`.
 
-Trong **Supabase Dashboard → Authentication → URL Configuration**, thêm `https://anhthuxinh.github.io/talenttrack/` vào **Redirect URLs** và đặt **Site URL** cùng địa chỉ. Bật đăng nhập email. Hai người được phép xem/sửa theo RLS là `thuta@pvep.com.vn` và `trinhhv@pvep.com.vn`. Mở trang, nhập một trong hai email và bấm liên kết đăng nhập được gửi qua email. Nếu email công ty không nhận được thư, kiểm tra cấu hình email/SMTP của Supabase hoặc dùng phương thức đăng nhập khác; hiện giao diện mới hỗ trợ liên kết email.
+Site URL và Redirect URL trong Supabase đã đặt là `https://anhthuxinh.github.io/talenttrack/`. Mọi người mở link là xem được dashboard, hồ sơ và điểm MĐHTCV. Để sửa, bấm **Đăng nhập để sửa**; hai email được cấp quyền là `thuta@pvep.com.vn` và `trinhhv@pvep.com.vn`. Liên kết đăng nhập được gửi qua email.
 
-Trang tải dữ liệu mới nhất khi mở hoặc bấm **Làm mới**. Các nút lưu nội dung, đánh giá MĐHTCV và lịch hướng dẫn ghi vào các bảng Supabase. Việc xóa nội dung/chủ đề trên trang đang ẩn vì chính sách cơ sở dữ liệu hiện chỉ cấp quyền thêm và sửa. Có thể quản lý việc xóa trong Supabase Table Editor sau khi xác nhận dữ liệu cần xóa.
+Trang tải dữ liệu mới nhất khi mở hoặc bấm **Làm mới**. Các nút lưu nội dung, đánh giá MĐHTCV và lịch hướng dẫn ghi vào các bảng Supabase. Việc xóa nội dung/chủ đề trên trang đang ẩn vì chính sách cơ sở dữ liệu hiện chỉ cấp quyền thêm và sửa. Có thể quản lý việc xóa trong Supabase Table Editor sau khi xác nhận dữ liệu cần xóa. Chính sách xem công khai được ghi trong `supabase/public-read.sql` ở bản mã làm việc riêng, không nằm trong bộ tệp trang web.
 
 ## Dữ liệu và cách tính
 

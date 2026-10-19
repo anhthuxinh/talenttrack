@@ -11,8 +11,8 @@
   const emailInput = document.querySelector('#login-email');
   let started = false;
 
-  function showLogin(text = '') {
-    shell.hidden = true;
+  function showLogin(text = '', blocking = true) {
+    if (blocking) shell.hidden = true;
     login.hidden = false;
     message.textContent = text;
   }
@@ -137,14 +137,17 @@
     },
   };
 
-  async function start() {
+  async function start(canEdit) {
     if (started) return;
     started = true;
     try {
       window.TALENT_SEED = await load();
       window.TALENT_REMOTE = remote;
+      window.TALENT_CAN_EDIT = canEdit;
       login.hidden = true;
       shell.hidden = false;
+      document.querySelector('#login-button').hidden = canEdit;
+      document.querySelector('#logout-button').hidden = !canEdit;
       const script = document.createElement('script');
       script.src = 'app.js';
       document.body.append(script);
@@ -170,12 +173,13 @@
     await client.auth.signOut();
     location.reload();
   });
+  document.querySelector('#login-button').addEventListener('click', () => showLogin('', false));
+  document.querySelector('#close-login').addEventListener('click', () => { login.hidden = true; });
   document.querySelector('#refresh-button').addEventListener('click', () => location.reload());
 
   if (!client) { showLogin('Không tải được thư viện Supabase. Hãy kiểm tra kết nối Internet.'); return; }
   client.auth.getSession().then(({ data, error }) => {
     if (error) showLogin(error.message);
-    else if (data.session && EDITORS.has(data.session.user.email?.toLowerCase())) start();
-    else showLogin();
+    else start(!!data.session && EDITORS.has(data.session.user.email?.toLowerCase()));
   }).catch(error => showLogin(`Không kiểm tra được đăng nhập: ${error.message}`));
 })();

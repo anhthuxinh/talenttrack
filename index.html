@@ -15,10 +15,11 @@
   <section id="login-screen" class="login-screen" hidden>
     <div class="login-card">
       <p class="eyebrow">PVEP · CHƯƠNG TRÌNH NHÂN VIÊN TÀI NĂNG</p>
-      <h1>Đăng nhập để xem dữ liệu</h1>
-      <p>Dùng email được cấp quyền. Liên kết đăng nhập sẽ được gửi vào hộp thư của bạn.</p>
+      <h1>Đăng nhập để sửa dữ liệu</h1>
+      <p>Việc xem dữ liệu không cần đăng nhập. Để cập nhật, dùng email được cấp quyền và mở liên kết gửi đến hộp thư của bạn.</p>
       <form id="login-form"><label>Email công ty<input id="login-email" type="email" required autocomplete="email" placeholder="ten@pvep.com.vn"></label><button type="submit" class="button primary">Gửi liên kết đăng nhập</button></form>
       <p id="login-message" role="status" aria-live="polite"></p>
+      <button type="button" class="button ghost" id="close-login">Quay lại xem dữ liệu</button>
     </div>
   </section>
   <div class="app-shell" hidden>
@@ -38,7 +39,7 @@
     <div class="main-area">
       <header class="topbar">
         <div class="breadcrumb">Chương trình nhân viên tài năng <span>/</span> <strong id="page-title">Tổng quan chương trình</strong></div>
-        <div class="top-actions"><span class="storage-badge" id="source-badge">SUPABASE</span><button class="button ghost" id="refresh-button">Làm mới</button><button class="button ghost" id="export-button">Sao lưu dữ liệu</button><button class="button ghost" id="logout-button">Đăng xuất</button><button class="button ghost" id="reset-data" hidden>Nạp lại từ Excel</button><button class="button ghost" id="import-button" hidden>Khôi phục bản sao</button><input id="import-file" type="file" accept=".json,application/json" hidden></div>
+        <div class="top-actions"><span class="storage-badge" id="source-badge">SUPABASE</span><button class="button ghost" id="refresh-button">Làm mới</button><button class="button ghost" id="export-button">Sao lưu dữ liệu</button><button class="button ghost" id="login-button" hidden>Đăng nhập để sửa</button><button class="button ghost" id="logout-button" hidden>Đăng xuất</button><button class="button ghost" id="reset-data" hidden>Nạp lại từ Excel</button><button class="button ghost" id="import-button" hidden>Khôi phục bản sao</button><input id="import-file" type="file" accept=".json,application/json" hidden></div>
       </header>
       <main id="main" tabindex="-1"></main>
     </div>

@@ -262,3 +262,7 @@
 .login-card input { width: 100%; padding: 12px; border: 1px solid #bad1d6; border-radius: 9px; font: inherit; }
 .login-card button { justify-content: center; }
 #login-message { min-height: 1.5em; margin-bottom: 0; }
+.login-screen:not([hidden]) { position: fixed; inset: 0; z-index: 100; }
+.read-only [data-add], .read-only [data-edit], .read-only [data-complete],
+.read-only [data-edit-paf], .read-only [data-edit-mentor], .read-only [data-add-mentor],
+.read-only #delete-record, .read-only #delete-mentor { display: none !important; }

@@ -285,6 +285,7 @@
 
   function render() {
     const online = !!window.TALENT_REMOTE;
+    document.body.classList.toggle('read-only', online && !window.TALENT_CAN_EDIT);
     const hasExcelSource = validData(window.TALENT_SEED) && window.TALENT_SEED.people.length > 0;
     document.querySelector('#source-label').textContent = online ? 'Supabase · dữ liệu chung' : hasExcelSource ? 'Excel 2025–2026' : data.people.length ? 'Dữ liệu trên thiết bị' : 'Chưa kết nối';
     document.querySelector('#source-count').textContent = data.people.length
