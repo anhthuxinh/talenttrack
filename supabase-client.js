@@ -3,12 +3,15 @@
   'use strict';
   const URL = 'https://ksyjvzbjpxsbfmmfdjqy.supabase.co';
   const KEY = 'sb_publishable_H0uGG7fzm4mhw69pE3bFeg_nYgo-3ys';
-  const EDITORS = new Set(['thuta@pvep.com.vn', 'trinhhv@pvep.com.vn']);
+  // Supabase Auth requires an email internally. Visitors only enter the editor ID.
+  const EDITOR_ID = 'phongdaotao';
+  const EDITOR_EMAIL = 'phongdaotao@talenttrack.example.com';
   const client = window.supabase?.createClient(URL, KEY);
   const login = document.querySelector('#login-screen');
   const shell = document.querySelector('.app-shell');
   const message = document.querySelector('#login-message');
-  const emailInput = document.querySelector('#login-email');
+  const idInput = document.querySelector('#login-id');
+  const passwordInput = document.querySelector('#login-password');
   let started = false;
 
   function showLogin(text = '', blocking = true) {
@@ -149,7 +152,7 @@
       document.querySelector('#login-button').hidden = canEdit;
       document.querySelector('#logout-button').hidden = !canEdit;
       const script = document.createElement('script');
-      script.src = 'app.js?v=public-1';
+      script.src = 'app.js?v=password-1';
       document.body.append(script);
     } catch (error) {
       started = false;
@@ -159,14 +162,30 @@
 
   document.querySelector('#login-form').addEventListener('submit', async event => {
     event.preventDefault();
-    const email = emailInput.value.trim().toLowerCase();
-    if (!EDITORS.has(email)) { message.textContent = 'Email này chưa có quyền truy cập chương trình.'; return; }
-    const button = event.submitter;
+    const id = idInput.value.trim().toLowerCase();
+    if (id !== EDITOR_ID) {
+      passwordInput.value = '';
+      message.textContent = 'ID hoặc mật khẩu không đúng.';
+      return;
+    }
+    const button = event.submitter || document.querySelector('#login-form button[type="submit"]');
     button.disabled = true;
-    message.textContent = 'Đang gửi liên kết đăng nhập…';
-    const { error } = await client.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + location.pathname } });
-    message.textContent = error ? `Không gửi được email: ${error.message}` : 'Đã gửi liên kết đăng nhập. Hãy mở email và bấm vào liên kết.';
-    button.disabled = false;
+    message.textContent = 'Đang đăng nhập…';
+    try {
+      const { data, error } = await client.auth.signInWithPassword({
+        email: EDITOR_EMAIL, password: passwordInput.value,
+      });
+      if (error || data.user?.email?.toLowerCase() !== EDITOR_EMAIL) {
+        message.textContent = 'ID hoặc mật khẩu không đúng.';
+        return;
+      }
+      location.reload();
+    } catch {
+      message.textContent = 'ID hoặc mật khẩu không đúng.';
+    } finally {
+      passwordInput.value = '';
+      button.disabled = false;
+    }
   });
 
   document.querySelector('#logout-button').addEventListener('click', async () => {
@@ -180,6 +199,6 @@
   if (!client) { showLogin('Không tải được thư viện Supabase. Hãy kiểm tra kết nối Internet.'); return; }
   client.auth.getSession().then(({ data, error }) => {
     if (error) showLogin(error.message);
-    else start(!!data.session && EDITORS.has(data.session.user.email?.toLowerCase()));
+    else start(!!data.session && data.session.user.email?.toLowerCase() === EDITOR_EMAIL);
   }).catch(error => showLogin(`Không kiểm tra được đăng nhập: ${error.message}`));
 })();
