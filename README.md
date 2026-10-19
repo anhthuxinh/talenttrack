@@ -6,7 +6,7 @@ Trang HTML tĩnh đọc và cập nhật dữ liệu chung trong Supabase. Khôn
 
 Nội dung thư mục `github-ready/` là bộ tệp công khai. Trong repository GitHub, vào **Settings → Pages → Build and deployment → Deploy from a branch**, chọn **main** và **/(root)**. Địa chỉ dự kiến: `https://anhthuxinh.github.io/talenttrack/`.
 
-Site URL và Redirect URL trong Supabase đã đặt là `https://anhthuxinh.github.io/talenttrack/`. Mọi người mở link là xem được dashboard, hồ sơ và điểm MĐHTCV. Để sửa, bấm **Đăng nhập để sửa**; hai email được cấp quyền là `thuta@pvep.com.vn` và `trinhhv@pvep.com.vn`. Liên kết đăng nhập được gửi qua email.
+Mọi người mở link là xem được dashboard, hồ sơ và điểm MĐHTCV. Để sửa, bấm **Đăng nhập để sửa** và dùng ID `phongdaotao` cùng mật khẩu của tài khoản Supabase Auth. Supabase dùng địa chỉ kỹ thuật `phongdaotao@talenttrack.example.com` ở phía sau để xác thực. Mật khẩu không có trong mã nguồn GitHub. Quyền ghi của các email cũ cần được thay bằng tài khoản này qua hàm `talent_is_editor()` trong Supabase SQL Editor.
 
 Trang tải dữ liệu mới nhất khi mở hoặc bấm **Làm mới**. Các nút lưu nội dung, đánh giá MĐHTCV và lịch hướng dẫn ghi vào các bảng Supabase. Việc xóa nội dung/chủ đề trên trang đang ẩn vì chính sách cơ sở dữ liệu hiện chỉ cấp quyền thêm và sửa. Có thể quản lý việc xóa trong Supabase Table Editor sau khi xác nhận dữ liệu cần xóa. Chính sách xem công khai được ghi trong `supabase/public-read.sql` ở bản mã làm việc riêng, không nằm trong bộ tệp trang web.
 
